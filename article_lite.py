@@ -44,14 +44,22 @@ class article_lite:
         else:
             print("3")
 
+    def pick_up_coin(self):
+        d(text="领金币").click()
+        if d(textStartsWith="看视频再领").click_exists(timeout=3.0):
+            self.ads_page()    
+
+    def return_to_main_page(self):
+        while d.app_current()['activity'] != ".activity.SplashActivity":
+            d.press("back") 
+            time.sleep(0.5) 
+
     # 看视频
     def look_video(self):
         while 1:
             d.swipe(0.5, 0.7, 0.5, 0.3) # 下滑屏幕
             if d(text="领金币").exists():
-                d(text="领金币").click()
-                if d(textStartsWith="看视频再领").click_exists(timeout=3.0):
-                    self.ads_page()
+                self.pick_up_coin()
             elif d(resourceId="com.ss.android.article.lite:id/b1i").exists() and d(resourceId="com.ss.android.article.lite:id/b1i").info['text'] == '开宝箱': # 开宝箱
                 d(resourceId="com.ss.android.article.lite:id/b1i").click()
                 if d(text="开宝箱得金币").click_exists(timeout=10.0):
@@ -65,16 +73,10 @@ class article_lite:
     # 查找宝箱
     def find_box(self):
         while 1:
-            while d.app_current()['activity'] != ".activity.SplashActivity":
-                d.press("back") 
-                time.sleep(0.5)                   
-
+            self.return_to_main_page() 
             d.swipe(0.5, 0.7, 0.5, 0.3) # 下滑屏幕
             if d(text="领金币").exists():
-                d(text="领金币").click()
-                if d(textStartsWith="看视频再领").click_exists(timeout=3.0):
-                    #time.sleep(1)
-                    self.ads_page()
+                self.pick_up_coin()
             elif d(resourceId="com.ss.android.article.lite:id/b1i", text="开宝箱").exists(): # 开宝箱
                 d(resourceId="com.ss.android.article.lite:id/b1i").click()
                 d(text="开宝箱得金币").wait(10.0)
@@ -91,16 +93,14 @@ class article_lite:
             else:
                 a = d(className="androidx.recyclerview.widget.RecyclerView").child(resourceId="com.ss.android.article.lite:id/b_")
                 for e in a:
+                    self.return_to_main_page() 
                     e.click()
                     count = 0
                     while count < 10:
                         # 获取每次滑动前页面下半部分的所有元素
                         page_content = d.dump_hierarchy()[(len(d.dump_hierarchy()) // 2):]
-                        if d(text="领金币").exists():    
-                            d(text="领金币").click()
-                            if d(textStartsWith="看视频再领").click_exists(timeout=3.0):
-                                #time.sleep(1)
-                                self.ads_page()
+                        if d(text="领金币").exists():
+                            self.pick_up_coin()
                         elif d(text="天降惊喜二选一").exists():
                             if d(text="天降惊喜二选一").down(className="android.widget.Image") == None:
                                 d.swipe(0.5, 0.6, 0.5, 0.5)                             
@@ -121,7 +121,7 @@ class article_lite:
                         new_page_content = d.dump_hierarchy()[(len(d.dump_hierarchy()) // 2):]
                         if new_page_content == page_content:
                             break
-                    d.press("back")
+
 
 s = article_lite()
 s.find_box()
