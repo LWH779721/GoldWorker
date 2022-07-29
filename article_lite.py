@@ -21,7 +21,6 @@ class article_lite:
 
     # 广告界面
     def ads_page(self):
-        print("1")
         if not d.wait_activity("com.ss.android.excitingvideo.ExcitingVideoActivity", timeout=10):
             print("activity not show")
             return
@@ -32,7 +31,6 @@ class article_lite:
             e = d(textContains='s后可领取奖励')
 
         if e.wait_gone(timeout=100.0):
-            print("2")
             d.press("back")
             time.sleep(0.5)
             if d(textStartsWith='再看一个', clickable='true').exists():
@@ -124,6 +122,13 @@ class article_lite:
 
 
 s = article_lite()
-s.find_box()
+while True:
+    try:
+        s.open_app()
+        s.find_box()
+    except Exception: 
+        print("exception")
+        time.sleep(1) 
+
 
 
