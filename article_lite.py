@@ -110,6 +110,7 @@ class article_lite:
                         elif d(description="加关注").exists():
                             if d(text="点击领取200金币").exists():
                                 d(text="点击领取200金币").click()
+                                d(textStartsWith="看视频再领").click_exists(timeout=3.0)
                                 self.ads_page()
                             break
                         elif d(text="加入书架", resourceId="com.ss.android.article.lite:id/dn").exists():
