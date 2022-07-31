@@ -108,6 +108,9 @@ class article_lite:
                                 self.ads_page()  
                                 break
                         elif d(description="加关注").exists():
+                            if d(text="点击领取200金币").exists():
+                                d(text="点击领取200金币").click()
+                                self.ads_page()
                             break
                         elif d(text="加入书架", resourceId="com.ss.android.article.lite:id/dn").exists():
                             break    
@@ -128,7 +131,7 @@ while True:
         s.find_box()
     except Exception: 
         print("exception")
-        time.sleep(1) 
+        #time.sleep(1) 
 
 
 
