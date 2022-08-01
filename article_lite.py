@@ -47,6 +47,13 @@ class article_lite:
         if d(textStartsWith="看视频再领").click_exists(timeout=3.0):
             self.ads_page()    
 
+    def pick_up_surprise(self):
+        if d(text="天降惊喜二选一").down(className="android.widget.Image") == None:
+            d.swipe(0.5, 0.6, 0.5, 0.5)
+        d(text="天降惊喜二选一").down(className="android.widget.Image").click()
+        if d(textStartsWith="看视频再领").click_exists(timeout=3.0):
+            self.ads_page()
+
     def return_to_main_page(self):
         while d.app_current()['activity'] != ".activity.SplashActivity":
             d.press("back") 
@@ -100,13 +107,8 @@ class article_lite:
                         if d(text="领金币").exists():
                             self.pick_up_coin()
                         elif d(text="天降惊喜二选一").exists():
-                            if d(text="天降惊喜二选一").down(className="android.widget.Image") == None:
-                                d.swipe(0.5, 0.6, 0.5, 0.5)                             
-                            d(text="天降惊喜二选一").down(className="android.widget.Image").click()
-                            if d(textStartsWith="看视频再领").click_exists(timeout=3.0):
-                                #time.sleep(1)
-                                self.ads_page()  
-                                break
+                            self.pick_up_surprise()
+                            break
                         elif d(description="加关注").exists():
                             if d(text="点击领取200金币").exists():
                                 d(text="点击领取200金币").click()
@@ -126,6 +128,10 @@ class article_lite:
 
 
 s = article_lite()
+'''
+s.open_app()
+s.find_box()
+'''
 while True:
     try:
         s.open_app()
@@ -133,6 +139,3 @@ while True:
     except Exception: 
         print("exception")
         #time.sleep(1) 
-
-
-
