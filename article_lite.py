@@ -7,8 +7,9 @@ d = u2.connect('1e506aa60405')
 
 class article_lite:
     def open_app(self):
-        d.app_stop('com.ss.android.article.lite') # 关闭app
-        d.app_start('com.ss.android.article.lite','com.ss.android.article.lite.activity.SplashActivity')  # 打开app
+        if d.app_current()['package'] != "com.ss.android.article.lite":
+            d.app_stop('com.ss.android.article.lite') # 关闭app
+            d.app_start('com.ss.android.article.lite','com.ss.android.article.lite.activity.SplashActivity')  # 打开app
 
     def video_page(self):
         d.xpath('//*[@resource-id="com.ss.android.article.lite:id/ate"]/android.widget.LinearLayout[1]/android.widget.FrameLayout[3]').click() # 打开小视频界面
@@ -21,6 +22,7 @@ class article_lite:
 
     # 广告界面
     def ads_page(self):
+        print("get coin")
         if not d.wait_activity("com.ss.android.excitingvideo.ExcitingVideoActivity", timeout=10):
             print("activity not show")
             return
@@ -82,10 +84,10 @@ class article_lite:
             d.swipe(0.5, 0.7, 0.5, 0.3) # 下滑屏幕
             if d(text="领金币").exists():
                 self.pick_up_coin()
-            elif d(resourceId="com.ss.android.article.lite:id/b1i", text="开宝箱").exists(): # 开宝箱
-                d(resourceId="com.ss.android.article.lite:id/b1i").click()
-                d(text="开宝箱得金币").wait(10.0)
-                if d(text="开宝箱得金币", className="com.lynx.tasm.behavior.ui.text.UIText").click():
+            elif d(resourceId="com.ss.android.article.lite:id/b2t", text="开宝箱").exists(): # 开宝箱
+                d(resourceId="com.ss.android.article.lite:id/b2t").click()
+                if d(text="开宝箱得金币", className="com.lynx.tasm.behavior.ui.text.UIText").exists(timeout=3.0):
+                    d(text="开宝箱得金币", className="com.lynx.tasm.behavior.ui.text.UIText").click()
                     d(text="看视频领", className="com.lynx.tasm.behavior.ui.text.FlattenUIText").wait(10.0)
                     d(text="看视频领", className="com.lynx.tasm.behavior.ui.text.FlattenUIText").click()
                     self.ads_page()
@@ -138,4 +140,3 @@ while True:
         s.find_box()
     except Exception: 
         print("exception")
-        #time.sleep(1) 
