@@ -5,18 +5,20 @@ import time
 
 d = u2.connect('1e506aa60405') 
 
-def pototo_speak():
-	d.app_stop('com.xs.fm') 
-	d.app_start('com.xs.fm')
-	time.sleep(4)
-	d.click(0.475, 0.924) # 点击播放
-	d.click(0.08, 0.061) # 退回主界面
-	d.click(0.701, 0.95) # 领现金界面
-	d(text='立即领取').click()
-	d.click(0.425, 0.574)
+class TomatoSpeak:
+	def open_app(self):
+		if self.d.app_current()['package'] != "com.xs.fm":
+			d.app_stop('com.xs.fm') 
+			d.app_start('com.xs.fm')
 
-def ps_ads():
-	while True:
+	def enter_coin_page(self):
+		d(className="android.widget.RadioGroup").child(className="android.widget.RadioButton", text="领现金").click()
+
+	def open_box(self):
+		d(text="开宝箱得金币").click()
+		
+	def look_ads(self):
 		d(text='立即观看').click()
-		time.sleep(17)
-		d.click(0.923, 0.049)
+
+	def main(self):
+		pause
