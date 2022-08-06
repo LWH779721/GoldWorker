@@ -8,8 +8,11 @@ d = u2.connect('1e506aa60405')
 class article_lite:
     def open_app(self):
         if d.app_current()['package'] != "com.ss.android.article.lite":
-            d.app_stop('com.ss.android.article.lite') # 关闭app
             d.app_start('com.ss.android.article.lite','com.ss.android.article.lite.activity.SplashActivity')  # 打开app
+
+    def restart_app(self):
+        d.app_stop('com.ss.android.article.lite') # 关闭app
+        d.app_start('com.ss.android.article.lite','com.ss.android.article.lite.activity.SplashActivity')  # 打开app
 
     def video_page(self):
         d.xpath('//*[@resource-id="com.ss.android.article.lite:id/ate"]/android.widget.LinearLayout[1]/android.widget.FrameLayout[3]').click() # 打开小视频界面
@@ -140,3 +143,4 @@ while True:
         s.find_box()
     except Exception: 
         print("exception")
+        s.restart_app()
