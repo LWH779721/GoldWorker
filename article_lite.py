@@ -47,15 +47,14 @@ class article_lite:
         else:
             print("3")
 
-    def pick_up_coin(self):
-        d(text="领金币").click()
-        if d(textStartsWith="看视频再领").click_exists(timeout=3.0):
-            self.ads_page()    
-
     def pick_up_surprise(self):
         if d(text="天降惊喜二选一").down(className="android.widget.Image") == None:
             d.swipe(0.5, 0.6, 0.5, 0.5)
-        d(text="天降惊喜二选一").down(className="android.widget.Image").click()
+        self.click_then_look_ads(d(text="天降惊喜二选一").down(className="android.widget.Image"))
+
+    # 点击控件再看广告
+    def click_then_look_ads(self, e):
+        e.click()
         if d(textStartsWith="看视频再领").click_exists(timeout=3.0):
             self.ads_page()
 
@@ -69,7 +68,7 @@ class article_lite:
         while 1:
             d.swipe(0.5, 0.7, 0.5, 0.3) # 下滑屏幕
             if d(text="领金币").exists():
-                self.pick_up_coin()
+                self.click_then_look_ads(d(text="领金币"))
             elif d(resourceId="com.ss.android.article.lite:id/b1i").exists() and d(resourceId="com.ss.android.article.lite:id/b1i").info['text'] == '开宝箱': # 开宝箱
                 d(resourceId="com.ss.android.article.lite:id/b1i").click()
                 if d(text="开宝箱得金币").click_exists(timeout=10.0):
@@ -86,7 +85,7 @@ class article_lite:
             self.return_to_main_page() 
             d.swipe(0.5, 0.7, 0.5, 0.3) # 下滑屏幕
             if d(text="领金币").exists():
-                self.pick_up_coin()
+                self.click_then_look_ads(d(text="领金币"))
             elif d(resourceId="com.ss.android.article.lite:id/b2t", text="开宝箱").exists(): # 开宝箱
                 d(resourceId="com.ss.android.article.lite:id/b2t").click()
                 if d(text="开宝箱得金币", className="com.lynx.tasm.behavior.ui.text.UIText").exists(timeout=3.0):
@@ -110,15 +109,14 @@ class article_lite:
                         # 获取每次滑动前页面下半部分的所有元素
                         page_content = d.dump_hierarchy()[(len(d.dump_hierarchy()) // 2):]
                         if d(text="领金币").exists():
-                            self.pick_up_coin()
+                            self.click_then_look_ads(d(text="领金币"))
                         elif d(text="天降惊喜二选一").exists():
                             self.pick_up_surprise()
                             break
-                        elif d(description="加关注").exists():
-                            if d(text="点击领取200金币").exists():
-                                d(text="点击领取200金币").click()
-                                d(textStartsWith="看视频再领").click_exists(timeout=3.0)
-                                self.ads_page()
+                        elif d.app_current()['activity'] == "com.ss.android.ugc.detail.refactor.ui.TikTokActivity":
+                            e = d(textMatches="点击领取[0-9]+金币")
+                            if e.exists():
+                                self.click_then_look_ads(e)
                             break
                         elif d(text="加入书架", resourceId="com.ss.android.article.lite:id/dn").exists():
                             break    
@@ -133,7 +131,7 @@ class article_lite:
 
 
 s = article_lite()
-'''
+
 s.open_app()
 s.find_box()
 '''
@@ -144,3 +142,4 @@ while True:
     except Exception: 
         print("exception")
         s.restart_app()
+'''
