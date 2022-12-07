@@ -11,8 +11,10 @@ class article_lite:
             d.app_start('com.ss.android.article.lite','com.ss.android.article.lite.activity.SplashActivity')  # 打开app
 
     def restart_app(self):
-        d.app_stop('com.ss.android.article.lite') # 关闭app
-        d.app_start('com.ss.android.article.lite','com.ss.android.article.lite.activity.SplashActivity')  # 打开app
+        #d.app_stop('com.ss.android.article.lite') # 关闭app
+        #d.app_start('com.ss.android.article.lite','com.ss.android.article.lite.activity.SplashActivity')  # 打开app
+        self.return_to_main_page()
+        d(resourceId='android:id/tabs').child(className="android.widget.RelativeLayout")[0].click() 
 
     def video_page(self):
         d.xpath('//*[@resource-id="com.ss.android.article.lite:id/ate"]/android.widget.LinearLayout[1]/android.widget.FrameLayout[3]').click() # 打开小视频界面
@@ -25,7 +27,6 @@ class article_lite:
 
     # 广告界面
     def ads_page(self):
-        print("get coin")
         if not d.wait_activity("com.ss.android.excitingvideo.ExcitingVideoActivity", timeout=10):
             print("activity not show")
             return
@@ -132,9 +133,6 @@ class article_lite:
 
 s = article_lite()
 
-s.open_app()
-s.find_box()
-'''
 while True:
     try:
         s.open_app()
@@ -142,4 +140,3 @@ while True:
     except Exception: 
         print("exception")
         s.restart_app()
-'''
