@@ -79,11 +79,19 @@ class douyin_lite:
             self.d(text="去领取").click() # 点击开宝箱
             self.ads_page()             
 
+    # 单次进入
+    def single_enter(self):
+        self.open_app()
+        self.enter_fuli()
+        self.open_gold_box()
+        self.look_ads()
+
+    # 持续运行
     def main(self):
-        #self.open_app()
+        self.open_app()
         #while True:
         #    self.look_video()
-        #self.enter_fuli()
+        self.enter_fuli()
             #time.sleep(0.5)
         self.open_gold_box()
         self.look_ads()

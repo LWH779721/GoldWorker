@@ -27,6 +27,7 @@ class article_lite:
 
     # 广告界面
     def ads_page(self):
+        print("get coin")
         if not d.wait_activity("com.ss.android.excitingvideo.ExcitingVideoActivity", timeout=10):
             print("activity not show")
             return

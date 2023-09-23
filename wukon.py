@@ -6,7 +6,7 @@ import time
 
 d = u2.connect('1e506aa60405')
 
-class wukun:
+class wukon:
     def open_app(self):
         d.app_stop('com.cat.readall') 
         d.app_start('com.cat.readall', '.activity.BrowserMainActivity')
@@ -19,6 +19,7 @@ class wukun:
             d(text="收桃子领金币", clickable="true").click()
             time.sleep(1)  
             d.press("back")
+
     # 播放广告界面
     def ads_page(self):
         e = d(textContains='s') 
@@ -43,15 +44,17 @@ class wukun:
             if d(textStartsWith='再看一条', clickable="true").exists:
                 d(textStartsWith='再看一条', clickable="true").click()
                 self.ads_page() 
-    # 领金币
+
+    # 领取金币
     def get_coin(self):
         e = d(className='com.lynx.tasm.behavior.ui.view.UIView', textContains='/')[0].info['text'].split('/')
-        if float(int(e[0])/int(e[1])) > 0.8:
+        if int(e[0]) > 100:
             d(text="领取金币").click()
             time.sleep(1)
             if d(textStartsWith='看视频再领', clickable="true").exists:
                 d(textStartsWith='看视频再领', clickable="true").click()
                 self.ads_page() 
+
     # 看广告
     def look_ads(self):
         if d(text="去完成", className="com.lynx.tasm.behavior.ui.LynxFlattenUI", clickable="true").click():
@@ -68,14 +71,15 @@ class wukun:
         while 1:
             d.press("volume_down")
             time.sleep(2)
+
     # 进入app 
     def enter_app(self):
         self.open_app()
         self.enter_my_gold_page()
-        self.collect_peaches()
-        #self.get_coin()
+        #self.collect_peaches()
+        self.get_coin()
         #self.open_gold_box()
         #self.look_ads()
 
-s = wukun()
+s = wukon()
 s.enter_app() 	
